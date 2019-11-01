@@ -13,6 +13,7 @@ struct AddView: View {
     @State private var name = ""
     @State private var type = "Personal"
     @State private var amount = ""
+    @State private var showingAlert = false
     @Environment(\.presentationMode) var presentationMode
     
     static let types = ["Personal", "Business"]
@@ -36,11 +37,16 @@ struct AddView: View {
                             let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount)
                             self.expenses.items.append(item)
                             self.presentationMode.wrappedValue.dismiss()
+                        } else {
+                            self.showingAlert = true
                         }
                     }
                 }
             }
             .navigationBarTitle("Add New Expense", displayMode: .inline)
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Please Enter a Valid Number"), message: nil, dismissButton: .default(Text("OK")))
+            }
         }
     }
 }

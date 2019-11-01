@@ -24,18 +24,30 @@ struct ContentView: View {
                         }
                         Spacer()
                         Text("$\(item.amount)")
+                        .foregroundColor(
+                        {
+                            if item.amount < 10{
+                                return Color.black
+                            } else if item.amount < 100 {
+                                return Color.blue
+                            } else {
+                                return Color.red
+                            }
+                            
+                        }()
+                        )
                     }
                 }
                 .onDelete(perform: removeItems(at:))
             }
             .navigationBarTitle("iExpense")
-            .navigationBarItems(trailing:
-                Button(action: {
-                    self.showingAddExpense = true
-                }, label: {
-                    Image(systemName: "plus")
-                })
-            )
+            .navigationBarItems(leading: EditButton(),
+                                trailing: Button(action: {
+                                    self.showingAddExpense = true
+                                }, label: {
+                                    Image(systemName: "plus")
+                                }))
+//            .navigationBarItems(leading: EditButton())
         }
         .sheet(isPresented: $showingAddExpense, content: { AddView(expenses: self.expenses) })
     }
